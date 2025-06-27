@@ -1,14 +1,3 @@
-'use client'
-import React from 'react'
-import { Profile } from '../components/profile'
-import { ProviderSession } from '../providers/session'
-
-const Index = () => {
-	return (
-		<ProviderSession>
-			<Profile />
-		</ProviderSession>
-	)
+export default function Home() {
+  return <h1>Welcome to NextJS world</h1>;
 }
-
-export default Index
