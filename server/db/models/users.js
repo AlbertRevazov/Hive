@@ -2,11 +2,16 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Users extends Model {
-        static associate({ Posts }) {
-            // Определение связи один ко многим с постами
-            Users.hasMany(Posts, {
-                foreignKey: 'user_id',
-                as: 'posts',
+        static associate(models) {
+            Users.hasMany(models.Post, { foreignKey: 'userId', as: 'posts' });
+            Users.hasMany(models.Comment, { foreignKey: 'userId', as: 'comments' });
+            Users.hasMany(models.Message, { foreignKey: 'senderId', as: 'sentMessages' });
+            Users.hasMany(models.Message, { foreignKey: 'receiverId', as: 'receivedMessages' });
+            Users.belongsToMany(models.User, {
+                through: 'Friendship',
+                as: 'friends',
+                foreignKey: 'requesterId',
+                otherKey: 'addresseeId',
             });
         }
     }
@@ -19,8 +24,10 @@ module.exports = (sequelize, DataTypes) => {
             phone: DataTypes.STRING,
             img: DataTypes.TEXT,
             desc: DataTypes.TEXT,
-            friends: DataTypes.TEXT,
             isAdmin: DataTypes.BOOLEAN,
+            isBanned: DataTypes.BOOLEAN,
+            banExpires: DataTypes.DATE,
+            lastOnline: DataTypes.DATE,
         },
         {
             sequelize,

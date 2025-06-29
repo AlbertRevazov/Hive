@@ -2,18 +2,17 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Posts extends Model {
-        static associate({ Users, UserPosts }) {
-            // Определение связи "многие ко многим" через промежуточную таблицу
-            Posts.belongsTo(Users, {
-                foreignKey: 'user_id',
-                as: 'author',
-            });
+        static associate(models) {
+            Posts.belongsTo(models.User, { foreignKey: 'userId', as: 'author' });
+            Posts.hasMany(models.Comment, { foreignKey: 'postId', as: 'comments' });
+            Posts.hasMany(models.Like, { foreignKey: 'postId', as: 'likes' });
         }
     }
     Posts.init(
         {
-            title: DataTypes.STRING,
-            desc: DataTypes.TEXT,
+            userId: DataTypes.INTEGER,
+            content: DataTypes.TEXT,
+            isPublic: DataTypes.BOOLEAN,
         },
         {
             sequelize,

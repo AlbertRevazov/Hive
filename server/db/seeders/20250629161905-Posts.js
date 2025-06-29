@@ -3,33 +3,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        const posts = [
+        await queryInterface.bulkInsert('Posts', [
             {
                 id: 1,
-                user_id: 1,
-                title: 'meow',
-                desc: 'cat',
+                userId: 1,
+                content: 'Привет всем! Это мой первый пост в Hive!',
+                isPublic: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
             {
                 id: 2,
-                user_id: 2,
-                title: 'hav',
-                desc: 'dog',
+                userId: 2,
+                content: 'Сегодня прекрасный день для кодинга!',
+                isPublic: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
-            {
-                id: 3,
-                user_id: 3,
-                title: 'muuu',
-                desc: 'cow',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
-        ];
-        await queryInterface.bulkInsert('Posts', posts);
+        ]);
     },
 
     async down(queryInterface, Sequelize) {

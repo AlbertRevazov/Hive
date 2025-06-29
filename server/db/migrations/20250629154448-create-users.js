@@ -1,5 +1,4 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable('Users', {
@@ -9,25 +8,13 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            name: {
-                allowNull: false,
-                type: Sequelize.STRING,
-            },
+            name: { allowNull: false, type: Sequelize.STRING },
             lastName: {
-                allowNull: false,
                 type: Sequelize.STRING,
             },
-            email: {
-                allowNull: false,
-                type: Sequelize.STRING,
-                unique: true,
-            },
+            email: { allowNull: false, type: Sequelize.STRING, unique: true },
+            password: { allowNull: false, type: Sequelize.STRING },
             phone: {
-                allowNull: false,
-                type: Sequelize.STRING,
-            },
-            password: {
-                allowNull: false,
                 type: Sequelize.STRING,
             },
             img: {
@@ -36,12 +23,19 @@ module.exports = {
             desc: {
                 type: Sequelize.TEXT,
             },
-            friends: {
-                type: Sequelize.TEXT,
-            },
             isAdmin: {
-                allowNull: false,
                 type: Sequelize.BOOLEAN,
+                defaultValue: false,
+            },
+            isBanned: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
+            },
+            banExpires: {
+                type: Sequelize.DATE,
+            },
+            lastOnline: {
+                type: Sequelize.DATE,
             },
             createdAt: {
                 allowNull: false,
@@ -53,7 +47,7 @@ module.exports = {
             },
         });
     },
-    async down(queryInterface, Sequelize) {
+    async down(queryInterface) {
         await queryInterface.dropTable('Users');
     },
 };

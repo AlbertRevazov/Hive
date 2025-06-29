@@ -29,6 +29,11 @@ router.post('/signUp', async (req, res) => {
             desc: '',
             friends: '',
             isAdmin: false,
+            isBanned: false,
+            banExpires: null,
+            lastOnline: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
         });
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {

@@ -1,8 +1,4 @@
 'use strict';
-
-const { Model } = require('sequelize');
-
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable('Posts', {
@@ -12,22 +8,22 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            user_id: {
-                allowNull: false,
+            userId: {
                 type: Sequelize.INTEGER,
                 references: {
                     model: 'Users',
                     key: 'id',
                 },
+                onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
             },
-            title: {
-                allowNull: false,
-                type: Sequelize.STRING,
-            },
-            desc: {
-                allowNull: false,
+            content: {
                 type: Sequelize.TEXT,
+                allowNull: false,
+            },
+            isPublic: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: true,
             },
             createdAt: {
                 allowNull: false,
@@ -39,7 +35,7 @@ module.exports = {
             },
         });
     },
-    async down(queryInterface, Sequelize) {
+    async down(queryInterface) {
         await queryInterface.dropTable('Posts');
     },
 };
