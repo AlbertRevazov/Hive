@@ -1,6 +1,6 @@
-import React from 'react'
-import { Profile } from '../../components/profile'
+import React from 'react';
+import { Profile } from '../../components/profile';
 
 export default function ProfilePage() {
-	return <Profile />
+    return <Profile />;
 }

@@ -1,10 +1,8 @@
-import React from 'react'
-import { Component } from '../../components'
+import React from 'react';
+import { Component } from '../../components';
 
 const ComponentPage = () => {
-  return (
-    <Component />
-  )
-}
+    return <Component />;
+};
 
-export default ComponentPage
+export default ComponentPage;
