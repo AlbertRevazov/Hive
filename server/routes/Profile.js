@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const { Router } = require('express');
 const { Users, Posts, Friends, Comments } = require('../db/models');
@@ -13,10 +12,10 @@ router.get('/user/:id', async (req, res) => {
                 {
                     model: Users,
                     as: 'author',
-                    attributes: ['name', 'lastName', 'email', 'password', 'phone', 'img', 'desc'], // Только нужные поля
+                    attributes: ['name', 'lastName', 'email', 'password', 'phone', 'img', 'desc'],
                 },
             ],
-            order: [['createdAt', 'DESC']], // Сортировка по дате
+            order: [['createdAt', 'DESC']],
         });
         const comments = await Comments.findAll({
             where: { userId: req.params.id },
@@ -25,10 +24,10 @@ router.get('/user/:id', async (req, res) => {
                 {
                     model: Users,
                     as: 'author',
-                    attributes: ['name', 'lastName', 'email', 'password', 'phone', 'img', 'desc'], // Только нужные поля
+                    attributes: ['name', 'lastName', 'email', 'password', 'phone', 'img', 'desc'],
                 },
             ],
-            order: [['createdAt', 'DESC']], // Сортировка по дате
+            order: [['createdAt', 'DESC']],
         });
         const friends = await Friends.findAll({
             where: {
@@ -40,19 +39,19 @@ router.get('/user/:id', async (req, res) => {
                     model: Users,
                     as: 'requester',
                     attributes: ['id', 'name', 'lastName', 'img'],
-                    where: { id: { [Op.ne]: req.params.id } }, // Исключаем текущего пользователя
+                    where: { id: { [Op.ne]: req.params.id } }, 
                     required: false,
                 },
                 {
                     model: Users,
                     as: 'addressee',
                     attributes: ['id', 'name', 'lastName', 'img'],
-                    where: { id: { [Op.ne]: req.params.id } }, // Исключаем текущего пользователя
+                    where: { id: { [Op.ne]: req.params.id } }, 
                     required: false,
                 },
             ],
         });
-        // Преобразуем друзей в плоскую структуру
+
         const friendsList = friends.map((f) => f.requester || f.addressee).filter(Boolean);
         res.status(200).json({
             posts,

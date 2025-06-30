@@ -5,7 +5,7 @@ import Link from 'next/link';
 export const Component = () => {
     const session = useSession();
     const { data } = session;
-    console.log(data, 'DATA');
+
     const handleLogout = async () => {
         await signOut({
             callbackUrl: '/sign',

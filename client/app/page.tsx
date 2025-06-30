@@ -1,3 +1,5 @@
+import { Navigation } from 'components/navigation';
+
 export default function Home() {
-    return <h1>Welcome to NextJS world</h1>;
+    return <Navigation />;
 }

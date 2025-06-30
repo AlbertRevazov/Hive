@@ -7,6 +7,7 @@ export const Profile = () => {
     const session = useSession();
     const { data } = session;
     const [profileData, setProfileData] = useState(null);
+
     useEffect(() => {
         if (data?.user?.id) {
             fetch(`http://localhost:3333/profile/user/${data.user.id}`)
@@ -34,6 +35,11 @@ export const Profile = () => {
                     Sign Out
                 </Link>
             </div>
+            {profileData.friends.map((el) => (
+                <Link href={`/person/${profileData.friends[0].id}`}>
+                    {profileData.friends[0].name}
+                </Link>
+            ))}
         </div>
     );
 };
