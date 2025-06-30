@@ -4,13 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     class Messages extends Model {
         static associate(models) {
             // Сообщение принадлежит отправителю
-            Messages.belongsTo(models.User, {
+            Messages.belongsTo(models.Users, {
                 foreignKey: 'senderId',
                 as: 'sender',
             });
 
             // Сообщение принадлежит получателю
-            Messages.belongsTo(models.User, {
+            Messages.belongsTo(models.Users, {
                 foreignKey: 'receiverId',
                 as: 'receiver',
             });

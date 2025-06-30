@@ -7,7 +7,7 @@ module.exports = {
             {
                 requesterId: 1,
                 addresseeId: 2,
-                status: 'pending',
+                status: 'accepted',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },

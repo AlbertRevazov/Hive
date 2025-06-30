@@ -12,7 +12,7 @@ export const useSignHook = (action: 'login' | 'register') => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-    // console.log(router, '[[[[[[[[[[');
+
     const handleCredentialsLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -42,7 +42,6 @@ export const useSignHook = (action: 'login' | 'register') => {
                         : result.error,
                 );
             } else {
-                console.log(result, 'LLLLLLLLLLLL');
                 router.push('/profile');
             }
         } catch (err) {

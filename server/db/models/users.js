@@ -3,11 +3,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Users extends Model {
         static associate(models) {
-            Users.hasMany(models.Post, { foreignKey: 'userId', as: 'posts' });
-            Users.hasMany(models.Comment, { foreignKey: 'userId', as: 'comments' });
-            Users.hasMany(models.Message, { foreignKey: 'senderId', as: 'sentMessages' });
-            Users.hasMany(models.Message, { foreignKey: 'receiverId', as: 'receivedMessages' });
-            Users.belongsToMany(models.User, {
+            Users.hasMany(models.Posts, { foreignKey: 'userId', as: 'posts' });
+            Users.hasMany(models.Comments, { foreignKey: 'userId', as: 'comments' });
+            Users.hasMany(models.Messages, { foreignKey: 'senderId', as: 'sentMessages' });
+            Users.hasMany(models.Messages, { foreignKey: 'receiverId', as: 'receivedMessages' });
+            Users.belongsToMany(models.Users, {
                 through: 'Friendship',
                 as: 'friends',
                 foreignKey: 'requesterId',

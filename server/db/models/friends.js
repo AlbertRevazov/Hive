@@ -3,8 +3,8 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Friends extends Model {
         static associate(models) {
-            Friends.belongsTo(models.User, { as: 'requester', foreignKey: 'requesterId' });
-            Friends.belongsTo(models.User, { as: 'addressee', foreignKey: 'addresseeId' });
+            Friends.belongsTo(models.Users, { as: 'requester', foreignKey: 'requesterId' });
+            Friends.belongsTo(models.Users, { as: 'addressee', foreignKey: 'addresseeId' });
         }
     }
     Friends.init(
