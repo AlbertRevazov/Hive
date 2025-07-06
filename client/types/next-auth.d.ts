@@ -1,29 +1,17 @@
 import NextAuth from 'next-auth';
+import { IUser } from './user';
 
 declare module 'next-auth' {
-    interface User {
-        id: string;
-        name: string;
-        email: string;
-        phone?: string;
-        img?: string;
-        desc?: string;
-        lastName?: string;
-        firstName?: string;
-        token?: string;
-        isAdmin?: boolean;
-        isBanned?: boolean;
-        banExpires?: Date;
-        lastOnline?: Date;
-        createdAt?: Date;
-        updatedAt?: Date;
-        provider?: string;
+    interface User extends IUser {
+        // Дополнительные поля, специфичные для NextAuth
+        friends?: IUser[]; // Если нужно сразу подгружать друзей
     }
 
     interface Session {
         user: User;
         expires: string;
     }
+
     interface IPerson {
         person: User;
         posts: {
@@ -32,5 +20,6 @@ declare module 'next-auth' {
             id: number;
             isPublic: boolean;
         }[];
+        friendshipStatus: 'pending' | 'accepted' | 'rejected' | 'none';
     }
 }

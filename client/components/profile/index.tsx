@@ -1,28 +1,25 @@
 'use client';
+import { FC } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { IProfile } from 'types/profile';
 
-export const Profile = () => {
+export interface IProfileProps {
+    profileData: IProfile;
+}
+
+export const Profile: FC<IProfileProps> = ({ profileData }) => {
     const session = useSession();
-    const { data } = session;
-    const [profileData, setProfileData] = useState(null);
 
-    useEffect(() => {
-        if (data?.user?.id) {
-            fetch(`http://localhost:3333/profile/user/${data.user.id}`)
-                .then((res) => res.json())
-                .then((data) => setProfileData(data));
-        }
-    }, [data?.user?.id]);
+    if (session.status === 'loading') return <div>Loading...</div>;
 
-    if (!profileData) return <div>Loading...</div>;
+    const { user } = session.data;
     return (
         <div>
             <div>
                 <div>
-                    <h1>Profile of {data?.user.name}</h1>
-                    {data?.user?.image && <img src={data?.user.image} alt="" />}
+                    <h1>Profile of {user.name}</h1>
+                    {user.image && <img src={user.image} alt="" />}
                 </div>
                 <Link
                     href="#"
@@ -35,11 +32,13 @@ export const Profile = () => {
                     Sign Out
                 </Link>
             </div>
-            {profileData.friends.map((el) => (
-                <Link href={`/person/${profileData.friends[0].id}`}>
-                    {profileData.friends[0].name}
-                </Link>
-            ))}
+            {profileData?.friends &&
+                profileData.friends.map((el) => (
+                    <Link key={el.id} href={`/person/${el.id}`}>
+                        {el.name}
+                        <img src={el.img} alt="" />
+                    </Link>
+                ))}
         </div>
     );
 };

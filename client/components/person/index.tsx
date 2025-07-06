@@ -1,6 +1,7 @@
 'use client';
-import type { IPerson } from 'next-auth';
 import React, { FC } from 'react';
+import type { IPerson } from 'next-auth';
+import { friendshipButtonTitle } from 'enums/friendshipStatuses';
 
 interface IPersonProps {
     userData: IPerson;
@@ -20,7 +21,7 @@ export const Person: FC<IPersonProps> = ({ userData }) => {
         updatedAt,
         id,
     } = userData.person;
-
+    const { friendshipStatus, posts } = userData;
     return (
         <div>
             <div>
@@ -32,7 +33,6 @@ export const Person: FC<IPersonProps> = ({ userData }) => {
                     <p>{desc}</p>
                 </div>
             </div>
-
             <div>
                 <h2>Основная информация</h2>
                 <ul>
@@ -44,7 +44,6 @@ export const Person: FC<IPersonProps> = ({ userData }) => {
                     )}
                 </ul>
             </div>
-
             <div>
                 <h2>Активность</h2>
                 <ul>
@@ -54,16 +53,30 @@ export const Person: FC<IPersonProps> = ({ userData }) => {
                 </ul>
             </div>
             <div>
-                <h2>Посты </h2>
+                {!!userData.posts.length && (
+                    <>
+                        <h2>Посты </h2>
 
-                {userData.posts.map((el) => {
-                    return (
-                        <ul key={el.id}>
-                            <li>Текст: {el.content}</li>
-                            <li>Дата создания: {new Date(el.createdAt).toLocaleString()}</li>
-                        </ul>
-                    );
-                })}
+                        {posts.map((el) => {
+                            return (
+                                <ul key={el.id}>
+                                    <li>Текст: {el.content}</li>
+                                    <li>
+                                        Дата создания: {new Date(el.createdAt).toLocaleString()}
+                                    </li>
+                                </ul>
+                            );
+                        })}
+                    </>
+                )}
+            </div>{' '}
+            <div>
+                <button
+                    disabled={friendshipStatus === 'accepted' || friendshipStatus === 'pending'}
+                >
+                    {friendshipButtonTitle[friendshipStatus]}
+                </button>
+                {friendshipStatus === 'accepted' && <button>Убрать из друзей</button>}
             </div>
         </div>
     );
