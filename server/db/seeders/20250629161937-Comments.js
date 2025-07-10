@@ -5,14 +5,14 @@ module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.bulkInsert('Comments', [
             {
-                userId: 1,
+                userId: 2,
                 postId: 1,
                 text: 'Добро пожаловать в Hive!',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
             {
-                userId: 2,
+                userId: 3,
                 postId: 2,
                 text: 'Какой язык программирования сегодня?',
                 createdAt: new Date(),

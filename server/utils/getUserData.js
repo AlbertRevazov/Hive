@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const { Users, Posts, Friends, Comments } = require('../db/models');
 
-// 1. Функция для получения постов пользователя
+// для постов пользователя
 async function getUserPosts(userId) {
     return await Posts.findAll({
         where: { userId },
@@ -17,7 +17,7 @@ async function getUserPosts(userId) {
     });
 }
 
-// 2. Функция для получения комментариев пользователя
+// для комментариев пользователя
 async function getUserComments(userId) {
     return await Comments.findAll({
         where: { userId },
@@ -33,7 +33,7 @@ async function getUserComments(userId) {
     });
 }
 
-// 3. Функция для получения друзей пользователя
+// для друзей пользователя
 async function getUserFriends(userId) {
     const friends = await Friends.findAll({
         where: {
@@ -60,6 +60,8 @@ async function getUserFriends(userId) {
 
     return friends.map((f) => f.requester || f.addressee).filter(Boolean);
 }
+
+// для статуса дружбы
 async function getFriendshipStatus(requesterId, addresseeId) {
     const friendship = await Friends.findOne({
         where: {

@@ -19,7 +19,7 @@ export const Profile: FC<IProfileProps> = ({ profileData }) => {
             <div>
                 <div>
                     <h1>Profile of {user.name}</h1>
-                    {user.image && <img src={user.image} alt="" />}
+                    {user.img && <img src={user.img} alt="" width={100} />}
                 </div>
                 <Link
                     href="#"
@@ -36,7 +36,7 @@ export const Profile: FC<IProfileProps> = ({ profileData }) => {
                 profileData.friends.map((el) => (
                     <Link key={el.id} href={`/person/${el.id}`}>
                         {el.name}
-                        <img src={el.img} alt="" />
+                        <img src={el.img} alt="" width={50} />
                     </Link>
                 ))}
         </div>
