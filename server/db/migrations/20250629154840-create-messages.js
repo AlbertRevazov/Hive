@@ -5,9 +5,8 @@ module.exports = {
         await queryInterface.createTable('Messages', {
             id: {
                 allowNull: false,
-                autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER,
+                type: Sequelize.UUID,
             },
             content: {
                 type: Sequelize.TEXT,
@@ -18,7 +17,7 @@ module.exports = {
                 defaultValue: false,
             },
             senderId: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.UUID,
                 allowNull: false,
                 references: {
                     model: 'Users',
@@ -28,7 +27,7 @@ module.exports = {
                 onDelete: 'CASCADE',
             },
             receiverId: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.UUID,
                 allowNull: false,
                 references: {
                     model: 'Users',

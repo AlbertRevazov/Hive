@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     }
     Friends.init(
         {
-            requesterId: DataTypes.INTEGER,
-            addresseeId: DataTypes.INTEGER,
+            requesterId: DataTypes.UUID,
+            addresseeId: DataTypes.UUID,
             status: {
                 type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
                 defaultValue: 'pending',

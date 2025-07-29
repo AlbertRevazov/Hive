@@ -11,7 +11,14 @@ declare module 'next-auth' {
         user: User;
         expires: string;
     }
-
+    interface IFriendship {
+        addresseeId: number;
+        createdAt: string;
+        id: number;
+        requesterId: number;
+        status: 'pending' | 'accepted' | 'rejected' | 'none';
+        updatedAt: string;
+    }
     interface IPerson {
         person: User;
         posts: {
@@ -20,6 +27,6 @@ declare module 'next-auth' {
             id: number;
             isPublic: boolean;
         }[];
-        friendshipStatus: 'pending' | 'accepted' | 'rejected' | 'none';
+        friendship: IFriendship | 'none';
     }
 }

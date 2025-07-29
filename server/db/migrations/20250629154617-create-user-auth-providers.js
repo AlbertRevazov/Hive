@@ -1,12 +1,12 @@
 'use strict';
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Likes', {
+        await queryInterface.createTable('UserAuthProviders', {
             id: {
-                allowNull: false,
-                autoIncrement: true,
+                type: Sequelize.UUID,
+                defaultValue: Sequelize.UUIDV4,
                 primaryKey: true,
-                type: Sequelize.INTEGER,
+                allowNull: false,
             },
             userId: {
                 type: Sequelize.UUID,
@@ -14,17 +14,15 @@ module.exports = {
                     model: 'Users',
                     key: 'id',
                 },
-                onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
             },
-            postId: {
-                type: Sequelize.UUID,
-                references: {
-                    model: 'Posts',
-                    key: 'id',
-                },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE',
+            providerType: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            providerId: {
+                type: Sequelize.STRING,
+                allowNull: false,
             },
             createdAt: {
                 allowNull: false,
@@ -36,7 +34,8 @@ module.exports = {
             },
         });
     },
-    async down(queryInterface) {
-        await queryInterface.dropTable('Likes');
+
+    async down(queryInterface, Sequelize) {
+        await queryInterface.dropTable('UserAuthProviders');
     },
 };

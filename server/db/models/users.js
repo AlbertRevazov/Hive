@@ -1,3 +1,4 @@
+// models/user.js
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
@@ -17,13 +18,18 @@ module.exports = (sequelize, DataTypes) => {
     }
     Users.init(
         {
+            id: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+                primaryKey: true,
+            },
             name: DataTypes.STRING,
             lastName: DataTypes.STRING,
             email: DataTypes.STRING,
             password: DataTypes.STRING,
             phone: DataTypes.STRING,
-            img: DataTypes.TEXT,
-            desc: DataTypes.TEXT,
+            img: DataTypes.STRING,
+            desc: DataTypes.STRING,
             isAdmin: DataTypes.BOOLEAN,
             isBanned: DataTypes.BOOLEAN,
             banExpires: DataTypes.DATE,

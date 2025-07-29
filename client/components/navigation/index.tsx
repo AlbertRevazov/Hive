@@ -19,7 +19,12 @@ const Navigation = () => {
                     </Link>
                 );
             })}
-            {session?.data && <Link href="/profile">Profile</Link>}
+            {session?.data && (
+                <>
+                    <Link href="/profile">Profile</Link>
+                    <Link href="/notifications">Notifications</Link>
+                </>
+            )}
             {session?.data ? (
                 <Link
                     href="#"

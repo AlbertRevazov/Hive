@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const { Users, Posts, Comments, Likes } = require('../db/models');
 
 // для всех постов, их авторов, лайков и комментариев

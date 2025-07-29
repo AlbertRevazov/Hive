@@ -61,6 +61,26 @@ async function getUserFriends(userId) {
     return friends.map((f) => f.requester || f.addressee).filter(Boolean);
 }
 
+// для приглашений пользователя
+async function getUserFriendRequests(userId) {
+    const requests = await Friends.findAll({
+        where: {
+            status: 'pending',
+            addresseeId: userId, // Только запросы, адресованные текущему пользователю
+        },
+        include: [
+            {
+                model: Users,
+                as: 'requester', // Пользователь, отправивший запрос
+                attributes: ['id', 'name', 'lastName', 'img'],
+                required: true, // Обязательное включение (запрос должен иметь отправителя)
+            },
+        ],
+        order: [['createdAt', 'DESC']], // Сортировка по дате (новые сначала)
+    });
+    return requests;
+}
+
 // для статуса дружбы
 async function getFriendshipStatus(requesterId, addresseeId) {
     const friendship = await Friends.findOne({
@@ -73,6 +93,12 @@ async function getFriendshipStatus(requesterId, addresseeId) {
     });
 
     if (!friendship) return 'none';
-    return friendship.status;
+    return friendship;
 }
-module.exports = { getUserComments, getUserFriends, getFriendshipStatus, getUserPosts };
+module.exports = {
+    getUserComments,
+    getUserFriends,
+    getFriendshipStatus,
+    getUserFriendRequests,
+    getUserPosts,
+};

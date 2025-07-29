@@ -9,21 +9,25 @@ export default async function PersonPage({ params }: { params: { id: string } })
         redirect('/api/auth/sign');
     }
     const { user } = session;
+
     if (user.id === params.id) {
         redirect('/profile');
     }
-
     try {
-        const response = await fetch(
-            `http://localhost:3333/person/${params.id}?sessionId=${user.id}`,
-        );
-        if (!response.ok) {
-            throw new Error('Failed to fetch user data');
-        }
+        const response = await fetch(`http://localhost:3333/person`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ personId: params.id, user }),
+        });
 
         const userData = await response.json();
+        if (response.status !== 200) {
+            return <div>Error: {userData.message}</div>;
+        }
 
-        return <Person userData={userData} />;
+        return <Person userData={userData} user={user} />;
     } catch (error) {
         return <div>Error loading user data: {error.message}</div>;
     }

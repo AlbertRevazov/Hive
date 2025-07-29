@@ -1,13 +1,17 @@
 'use client';
 import React, { FC } from 'react';
-import type { IPerson } from 'next-auth';
-import { friendshipButtonTitle } from 'enums/friendshipStatuses';
+import type { IFriendship, IPerson } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import { User } from 'next-auth/core/types';
+import { useFriendship } from '../../utils/UseFriendship';
 
 interface IPersonProps {
     userData: IPerson;
+    user: User;
 }
 
-export const Person: FC<IPersonProps> = ({ userData }) => {
+export const Person: FC<IPersonProps> = ({ userData, user }) => {
+    const session = useSession();
     const {
         name,
         lastName,
@@ -21,11 +25,26 @@ export const Person: FC<IPersonProps> = ({ userData }) => {
         updatedAt,
         id,
     } = userData.person;
-    const { friendshipStatus, posts } = userData;
+    const { friendship, posts } = userData;
+    const { getFriendsRequest, getFriendshipButtonTitle } = useFriendship();
+    const friendshipStatus = friendship === 'none' ? 'none' : friendship.status;
+    const ButtonContent: React.ReactNode =
+        friendshipStatus === 'accepted' ? (
+            <button onClick={() => getFriendsRequest(user.id, id, 'remove')}>
+                Убрать из друзей
+            </button>
+        ) : (
+            getFriendshipButtonTitle(
+                friendshipStatus,
+                +session?.data?.user.id,
+                friendship as IFriendship,
+            )
+        );
+
     return (
-        <div>
+        <>
             <div>
-                <img src={img} alt={`${name} ${lastName}`} />
+                <img src={img} alt={`${name} ${lastName}`} loading="lazy" width={200} />
                 <div>
                     <h1>
                         {name} {lastName}
@@ -70,14 +89,13 @@ export const Person: FC<IPersonProps> = ({ userData }) => {
                     </>
                 )}
             </div>{' '}
-            <div>
-                <button
-                    disabled={friendshipStatus === 'accepted' || friendshipStatus === 'pending'}
-                >
-                    {friendshipButtonTitle[friendshipStatus]}
+            {friendshipStatus === 'none' ? (
+                <button onClick={() => getFriendsRequest(session.data?.user.id, id, 'create')}>
+                    {ButtonContent}
                 </button>
-                {friendshipStatus === 'accepted' && <button>Убрать из друзей</button>}
-            </div>
-        </div>
+            ) : (
+                ButtonContent
+            )}
+        </>
     );
 };

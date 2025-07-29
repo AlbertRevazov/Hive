@@ -4,6 +4,7 @@ const Auth = require('./routes/Auth');
 const Profile = require('./routes/Profile');
 const Person = require('./routes/Person');
 const Feed = require('./routes/Feed');
+const Friendship = require('./routes/Friendship');
 const app = express();
 const cors = require('cors');
 
@@ -18,6 +19,7 @@ app.use('/auth', Auth);
 app.use('/profile', Profile);
 app.use('/person', Person);
 app.use('/feed', Feed);
+app.use('/friendship', Friendship);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

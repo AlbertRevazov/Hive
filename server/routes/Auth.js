@@ -62,7 +62,7 @@ router.post('/signIn', async (req, res) => {
         }
         const correctPass = await bcrypt.compare(password, user.password);
         if (!correctPass) {
-            return res.status(STATUS_CODES.UNAUTHORIZED).json({
+            return res.json({
                 message: 'Неверный пароль.',
             });
         }

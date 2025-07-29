@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     }
     Messages.init(
         {
-            senderId: DataTypes.INTEGER,
-            receiverId: DataTypes.INTEGER,
+            senderId: DataTypes.UUID,
+            receiverId: DataTypes.UUID,
             content: DataTypes.TEXT,
             isDeleted: DataTypes.BOOLEAN,
         },

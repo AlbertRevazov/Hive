@@ -11,12 +11,27 @@ export default async function ProfilePage() {
         redirect('/api/auth/sign');
     }
     const { user } = session;
+
     try {
-        const response = await fetch(`http://localhost:3333/profile/user/${user.id}`);
+        const url =
+            user.provider === 'credentials'
+                ? 'http://localhost:3333/profile/user'
+                : 'http://localhost:3333/profile/provider';
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user }),
+        });
         if (!response.ok) {
             throw new Error('Failed to fetch user data');
         }
         const userData = await response.json();
+        if (response.status !== 200) {
+            return <div>Error: {userData.message}</div>;
+        }
+
         return <Profile profileData={userData} />;
     } catch (error) {
         return <div>Error loading user data: {error.message}</div>;

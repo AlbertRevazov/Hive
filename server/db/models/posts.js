@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     Posts.init(
         {
-            userId: DataTypes.INTEGER,
+            userId: DataTypes.UUID,
             content: DataTypes.TEXT,
             isPublic: DataTypes.BOOLEAN,
         },
