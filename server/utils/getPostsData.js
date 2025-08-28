@@ -26,10 +26,11 @@ async function getAllPostsWithDetails(userId) {
                 include: [
                     {
                         model: Users,
-                        as: 'author', // Убедитесь, что это соответствует вашей ассоциации
+                        as: 'author', 
                         attributes: ['id', 'name', 'lastName', 'img'],
                     },
                 ],
+                order: [['createdAt', 'ASC']],
             },
         ],
         order: [['createdAt', 'DESC']],

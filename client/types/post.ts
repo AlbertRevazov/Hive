@@ -14,7 +14,7 @@ interface IPostLike {
     user: IUser;
 }
 
-interface IPostComment {
+export interface IPostComment {
     id: number;
     postId: number;
     text: string;
@@ -24,7 +24,7 @@ interface IPostComment {
 }
 
 export interface IPost {
-    id: number;
+    id: string;
     authorId: number;
     content: string;
     isPublic: boolean;

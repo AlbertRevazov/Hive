@@ -4,6 +4,7 @@ const Auth = require('./routes/Auth');
 const Profile = require('./routes/Profile');
 const Person = require('./routes/Person');
 const Feed = require('./routes/Feed');
+const Comment = require('./routes/Comment');
 const Friendship = require('./routes/Friendship');
 const app = express();
 const cors = require('cors');
@@ -19,6 +20,7 @@ app.use('/auth', Auth);
 app.use('/profile', Profile);
 app.use('/person', Person);
 app.use('/feed', Feed);
+app.use('/comment', Comment);
 app.use('/friendship', Friendship);
 
 const PORT = process.env.PORT;

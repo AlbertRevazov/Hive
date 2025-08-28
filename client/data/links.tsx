@@ -4,7 +4,7 @@ export const navigationLinks = [
         href: '/',
     },
     {
-        label: 'Custom',
-        href: '/nen',
+        label: 'Feed',
+        href: '/feed',
     },
 ];
