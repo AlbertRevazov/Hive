@@ -1,8 +1,8 @@
 'use client';
 import { FC } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { IProfile } from 'types/profile';
+import Link from 'next/link';
 
 export interface IProfileProps {
     profileData: IProfile;
@@ -14,6 +14,8 @@ export const Profile: FC<IProfileProps> = ({ profileData }) => {
     if (session.status === 'loading') return <div>Loading...</div>;
 
     const { user } = session.data;
+    console.log(profileData, '----');
+
     return (
         <div>
             <div>

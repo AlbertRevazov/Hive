@@ -13,8 +13,9 @@ export default async function PersonPage({ params }: { params: { id: string } })
     if (user.id === params.id) {
         redirect('/profile');
     }
+
     try {
-        const response = await fetch(`http://localhost:3333/person`, {
+        const response = await fetch(`http://localhost:3333/person/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,6 +24,7 @@ export default async function PersonPage({ params }: { params: { id: string } })
         });
 
         const userData = await response.json();
+
         if (response.status !== 200) {
             return <div>Error: {userData.message}</div>;
         }

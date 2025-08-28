@@ -90,6 +90,7 @@ router.get('/:id', async (req, res) => {
     try {
         const currentUserId = await getInternalId(req.params.id);
         const friends = await getUserFriendRequests(currentUserId);
+        console.log(JSON.parse(JSON.stringify(friends)), '------------------', currentUserId);
         res.status(200).json({ friends });
     } catch (error) {
         res.status(500).json({ error: error.message });
