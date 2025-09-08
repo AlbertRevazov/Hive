@@ -1,13 +1,11 @@
 const { Router } = require('express');
-const { getAllPostsWithDetails } = require('../utils/getPostsData');
 const { getInternalId } = require('../utils/getInternalId');
 const router = new Router();
 
-router.get('/list/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const externalId = await getInternalId(req.params.id);
-        const posts = await getAllPostsWithDetails(externalId);
-        res.status(200).json({ posts, Id: externalId });
+        res.status(200).json(externalId);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

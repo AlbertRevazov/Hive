@@ -16,7 +16,7 @@ async function getAllPostsWithDetails(userId) {
                     {
                         model: Users,
                         as: 'user',
-                        attributes: ['id', 'name', 'lastName', 'img'],
+                        attributes: ['id'],
                     },
                 ],
             },
@@ -26,7 +26,7 @@ async function getAllPostsWithDetails(userId) {
                 include: [
                     {
                         model: Users,
-                        as: 'author', 
+                        as: 'author',
                         attributes: ['id', 'name', 'lastName', 'img'],
                     },
                 ],

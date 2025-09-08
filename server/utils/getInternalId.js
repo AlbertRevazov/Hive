@@ -12,4 +12,5 @@ async function getInternalId(externalId) {
 
     return externalId;
 }
+
 module.exports = { getInternalId };
