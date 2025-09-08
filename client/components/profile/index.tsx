@@ -10,11 +10,9 @@ export interface IProfileProps {
 
 export const Profile: FC<IProfileProps> = ({ profileData }) => {
     const session = useSession();
+    const { user, friends } = profileData;
 
     if (session.status === 'loading') return <div>Loading...</div>;
-
-    const { user } = session.data;
-    console.log(profileData, '----');
 
     return (
         <div>
@@ -34,8 +32,8 @@ export const Profile: FC<IProfileProps> = ({ profileData }) => {
                     Sign Out
                 </Link>
             </div>
-            {profileData?.friends &&
-                profileData.friends.map((el) => (
+            {friends &&
+                friends.map((el) => (
                     <Link key={el.id} href={`/person/${el.id}`}>
                         {el.name}
                         <img src={el.img} alt="" width={50} />

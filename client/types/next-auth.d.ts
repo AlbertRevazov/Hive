@@ -3,14 +3,32 @@ import { IUser } from './user';
 
 declare module 'next-auth' {
     interface User extends IUser {
-        // Дополнительные поля, специфичные для NextAuth
+        id: string;
+        name?: string | null;
+        email?: string | null;
+        img?: string | null;
+        image?: string | null;
+        provider?: string | null;
+        firstName?: string | null;
+        lastName?: string | null;
+        token?: string | null;
+        dbUserId?: string;
+        providerAccountId?: string;
         friends?: IUser[]; // Если нужно сразу подгружать друзей
     }
 
     interface Session {
-        user: User;
-        expires: string;
+        user: {
+            id: string;
+            name?: string | null;
+            email?: string | null;
+            img?: string | null;
+            provider?: string | null;
+            providerAccountId?: string;
+            dbUserId?: string;
+        };
     }
+
     interface IFriendship {
         addresseeId: number;
         createdAt: string;
@@ -19,6 +37,7 @@ declare module 'next-auth' {
         status: 'pending' | 'accepted' | 'rejected' | 'none';
         updatedAt: string;
     }
+
     interface IPerson {
         person: User;
         posts: {
@@ -28,5 +47,19 @@ declare module 'next-auth' {
             isPublic: boolean;
         }[];
         friendship: IFriendship | 'none';
+    }
+}
+
+declare module 'next-auth/jwt' {
+    interface JWT {
+        user?: {
+            id: string;
+            name?: string | null;
+            email?: string | null;
+            img?: string | null;
+            provider?: string | null;
+            providerAccountId?: string;
+            dbUserId?: string;
+        };
     }
 }

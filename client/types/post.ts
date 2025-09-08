@@ -8,7 +8,7 @@ interface IUser {
 interface IPostLike {
     id: number;
     postId: number;
-    userId: number;
+    userId: string;
     createdAt: string;
     updatedAt: string;
     user: IUser;

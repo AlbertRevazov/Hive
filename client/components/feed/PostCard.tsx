@@ -1,99 +1,126 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Comment } from './comment';
 import { CommentForm } from './commentForm';
 import { IPost } from 'types/post';
 import Link from 'next/link';
 import Image from 'next/image';
 import CommentIcon from '../../icons/comments.svg';
-import LikesIcon from '../../icons/likes.svg';
+import LikeIcon from '../../icons/like.svg';
+import LikedIcon from '../../icons/liked.svg';
+import './styles.css';
 
 interface PostCardProps {
     post: IPost;
+    currentUserId: string;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ post }) => {
-    const [showComments, setShowComments] = useState(false);
-    const [showCommentForm, setShowCommentForm] = useState(false);
+export const PostCard: React.FC<PostCardProps> = React.memo(({ post, currentUserId }) => {
+    const [areCommentsVisible, setAreCommentsVisible] = useState(false);
+    const [isCommentFormVisible, setIsCommentFormVisible] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(post.likes.length);
 
-    const toggleComments = () => setShowComments(!showComments);
-    const toggleCommentForm = () => setShowCommentForm(!showCommentForm);
+    // проверка лайка
+    useEffect(() => {
+        const hasUserLiked = post.likes.some((like) => like.userId === currentUserId);
+        setIsLiked(hasUserLiked);
+    }, [post.likes, currentUserId]);
 
-    const handleCommentCreated = () => {
-        setShowCommentForm(false);
-    };
+    const toggleComments = useCallback(() => {
+        setAreCommentsVisible((prev) => !prev);
+    }, []);
+
+    const toggleCommentForm = useCallback(() => {
+        setIsCommentFormVisible((prev) => !prev);
+    }, []);
+
+    const handleCommentSubmit = useCallback(() => {
+        setIsCommentFormVisible(false);
+    }, []);
+
+    const handleLikeToggle = useCallback(async () => {
+        const action = isLiked ? 'remove' : 'add';
+
+        try {
+            await fetch(`http://localhost:3333/like/${action}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId: currentUserId, postId: post.id }),
+            });
+
+            setIsLiked((prev) => !prev);
+            setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
+        } catch (error) {
+            console.error('Error updating like:', error);
+        }
+    }, [isLiked, currentUserId, post.id]);
+
+    const authorName = `${post.author.name} ${post.author.lastName}`;
+    const formattedDate = new Date(post.createdAt).toLocaleString('ru-RU', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    });
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-                padding: '16px',
-                borderBottom: '1px solid grey',
-                maxWidth: '450px',
-                margin: '0 auto',
-            }}
-        >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <article className="post-card">
+            <div className="post-header">
                 <img
                     src={post.author.img}
-                    alt={`${post.author.name} ${post.author.lastName}`}
+                    alt={authorName}
                     width={60}
-                    style={{ borderRadius: '50%' }}
+                    height={60}
+                    className="author-avatar"
                 />
-                <div>
-                    <Link href={`/person/${post.author.id}`}>
-                        <span style={{ fontWeight: 'bold' }}>
-                            {post.author.name} {post.author.lastName}
-                        </span>
+                <div className="post-info">
+                    <Link href={`/profile/${post.author.id}`} className="author-link">
+                        {authorName}
                     </Link>
-                    <div>
-                        <h3 style={{ margin: '8px 0' }}>{post.content}</h3>
-                        <span style={{ fontSize: '12px', color: '#666' }}>
-                            {new Date(post.createdAt).toLocaleString('ru-RU', {
-                                dateStyle: 'medium',
-                                timeStyle: 'short',
-                            })}
-                        </span>
-                        {!post.isPublic && (
-                            <span style={{ marginLeft: '8px', fontSize: '12px', color: '#999' }}>
-                                Private
-                            </span>
-                        )}
+                    <h3 className="post-content">{post.content}</h3>
+                    <div className="post-meta">
+                        <time className="post-date">{formattedDate}</time>
+                        {!post.isPublic && <span className="post-visibility">Private</span>}
                     </div>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '16px' }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Image src={LikesIcon} width={20} height={20} alt="likes" />
-                    {post.likes.length}
-                </span>
-                <span
-                    style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
-                    onClick={toggleComments}
+            <div className="post-actions">
+                <button
+                    className="like-button"
+                    onClick={handleLikeToggle}
+                    aria-label={isLiked ? 'Убрать лайк' : 'Поставить лайк'}
                 >
-                    <Image src={CommentIcon} width={20} height={20} alt="comments" />
+                    <Image src={isLiked ? LikedIcon : LikeIcon} width={20} height={20} alt="" />
+                    {likesCount}
+                </button>
+
+                <button
+                    className="comment-button"
+                    onClick={toggleComments}
+                    aria-label={areCommentsVisible ? 'Скрыть комментарии' : 'Показать комментарии'}
+                >
+                    <Image src={CommentIcon} width={20} height={20} alt="" />
                     {post.comments.length}
-                </span>
+                </button>
             </div>
 
-            {showComments && (
-                <div>
+            {areCommentsVisible && (
+                <div className="comments-section">
                     {post.comments.map((comment) => (
                         <Comment key={comment.id} comment={comment} />
                     ))}
                 </div>
             )}
 
-            <button onClick={toggleCommentForm} style={{ alignSelf: 'flex-start' }}>
-                {showCommentForm ? 'Отмена' : 'Написать комментарий'}
+            <button className="comment-form-toggle" onClick={toggleCommentForm}>
+                {isCommentFormVisible ? 'Отмена' : 'Написать комментарий'}
             </button>
 
-            {showCommentForm && (
-                <CommentForm postId={post.id} onCommentCreated={handleCommentCreated} />
+            {isCommentFormVisible && (
+                <CommentForm postId={post.id} onCommentSubmit={handleCommentSubmit} />
             )}
-        </div>
+        </article>
     );
-};
+});

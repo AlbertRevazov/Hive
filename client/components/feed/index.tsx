@@ -4,15 +4,21 @@ import { IPost } from 'types/post';
 import { PostCard } from './PostCard';
 
 interface IFeedResponse {
-    posts: IPost[];
+    data: { posts: IPost[]; Id: string };
 }
 
-export const Feed: React.FC<IFeedResponse> = ({ posts }) => {
+export const Feed: React.FC<IFeedResponse> = React.memo(({ data }) => {
+    if (!data.posts || data.posts.length === 0) {
+        return <div>No posts found</div>;
+    }
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-            ))}
+            {data.posts.map((post) => {
+                return <PostCard key={post.id} post={post} currentUserId={data.Id} />;
+            })}
         </div>
     );
-};
+});
+
+Feed.displayName = 'Feed';

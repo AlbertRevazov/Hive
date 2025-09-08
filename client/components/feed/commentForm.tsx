@@ -4,10 +4,10 @@ import { useSession } from 'next-auth/react';
 
 interface CommentFormProps {
     postId: string;
-    onCommentCreated: () => void;
+    onCommentSubmit: () => void;
 }
 
-export const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentCreated }) => {
+export const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentSubmit }) => {
     const [commentText, setCommentText] = useState('');
     const { data } = useSession();
 
@@ -30,7 +30,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentCreat
             });
 
             setCommentText('');
-            onCommentCreated();
+            onCommentSubmit();
         } catch (error) {
             console.error('Error creating comment:', error);
         }

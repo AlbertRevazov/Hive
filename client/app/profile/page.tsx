@@ -31,7 +31,7 @@ export default async function ProfilePage() {
         if (response.status !== 200) {
             return <div>Error: {userData.message}</div>;
         }
-
+        console.log(userData, 'pppppppppppppppppppp');
         return <Profile profileData={userData} />;
     } catch (error) {
         return <div>Error loading user data: {error.message}</div>;

@@ -10,14 +10,19 @@ const FeedPage = async () => {
     if (!session?.user?.id) {
         redirect('/api/auth/sign');
     }
+
     try {
-        const response = await fetch('http://localhost:3333/feed/list');
+        const response = await fetch(`http://localhost:3333/feed/list/${session.user.id}`);
+
         if (!response.ok) {
             throw new Error('Failed to fetch posts data');
         }
-        const posts = await response.json();
-        return <Feed posts={posts} />;
+
+        const data = await response.json();
+
+        return <Feed data={data} />;
     } catch (error) {
+        console.error('Error in FeedPage:', error);
         return <div>Error loading user data: {error.message}</div>;
     }
 };
